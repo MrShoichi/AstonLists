@@ -4,13 +4,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.shoichi.lists.impls.CustomArrayList;
-import ru.shoichi.lists.interfaces.ICustomList;
+import ru.shoichi.lists.interfaces.CustomList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class CustomArrayListTests {
-    private static ICustomList<Integer> list;
+    private static CustomList<Integer> list;
 
     @BeforeAll
     public static void setUp() {
@@ -87,12 +87,24 @@ public class CustomArrayListTests {
     }
 
     @Test
-    public void testNegativeRemoveForIndex() {
+    public void testNegativeRemoveBeforeBoundsForIndex() {
         list.add(1);
         list.add(2);
         list.add(3);
         try {
             list.remove(-1);
+        } catch (IndexOutOfBoundsException e) {
+            return;
+        }
+        fail("Ожидалось исключение IndexOutOfBoundsException");
+    }
+
+    @Test
+    public void testNegativeRemoveAfterBoundsForIndex() {
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        try {
             list.remove(4);
         } catch (IndexOutOfBoundsException e) {
             return;

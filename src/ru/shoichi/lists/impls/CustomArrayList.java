@@ -1,6 +1,6 @@
 package ru.shoichi.lists.impls;
 
-import ru.shoichi.lists.interfaces.ICustomList;
+import ru.shoichi.lists.interfaces.CustomList;
 
 import java.util.Comparator;
 
@@ -11,7 +11,7 @@ import java.util.Comparator;
  *
  * @param <T> тип элементов списка
  */
-public class CustomArrayList<T> implements ICustomList<T> {
+public class CustomArrayList<T> implements CustomList<T> {
 
     /**
      * Массив для хранения элементов

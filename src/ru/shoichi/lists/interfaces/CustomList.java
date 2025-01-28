@@ -9,7 +9,7 @@ import java.util.Comparator;
  *
  * @param <T> тип элементов списка
  */
-public interface ICustomList<T> {
+public interface CustomList<T> {
     /**
      * Метод добавления элемента в конец списка.
      * При переполнении списка, размер списка увеличивается.

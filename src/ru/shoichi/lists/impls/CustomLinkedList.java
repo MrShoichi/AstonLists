@@ -1,6 +1,6 @@
 package ru.shoichi.lists.impls;
 
-import ru.shoichi.lists.interfaces.ICustomList;
+import ru.shoichi.lists.interfaces.CustomList;
 
 import java.util.Comparator;
 import java.util.NoSuchElementException;
@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * ru.shoichi.lists.impls.CustomLinkedList - реализация двусвязного списка. Класс предоставляет основные методы работы со списком.
  * @param <T> тип элементов списка
  */
-public class CustomLinkedList<T> implements ICustomList<T> {
+public class CustomLinkedList<T> implements CustomList<T> {
 
     /**
      * Начало списка.
