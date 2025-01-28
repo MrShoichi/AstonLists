@@ -25,35 +25,28 @@ public class CustomLinkedList<T> implements ICustomList<T> {
     private int size;
 
 
-    /**
-     * Метод добавления элемента в список.
-     * Скорость O(1).
-     * @param o добавляемый элемент.
-     */
+
     @Override
     public void add(T o) {
         addLast(o);
     }
 
-    /**
-     * Метод вставки элемента на определенную позицию списка.
-     * Средняя скорость O(n).
-     *
-     * @param index индекс в списке.
-     * @param o добавляемый элемент.
-     * @throws IndexOutOfBoundsException Если индекс зашел за границы списка. (index < 0 || index >= size)
-     */
+
     @Override
     public void add(int index, T o) {
-        if (size < index || index < 0) {
+        if (index > size + 1 || index < 0) {
             throw new IndexOutOfBoundsException();
         }
         if (index == 0) {
             addFirst(o);
             return;
         }
+        if (index == size) {
+            addLast(o);
+            return;
+        }
 
-        var existsNode = getNode(index);
+        Node<T> existsNode = getNode(index);
         existsNode.last.next = new Node<>(o, existsNode, existsNode.last);
         existsNode.last = existsNode.last.next;
         size++;
@@ -67,7 +60,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
      * @param o добавляемый элемент.
      */
     public void addFirst(T o) {
-        var node = new Node<>(o);
+        Node<T> node = new Node<>(o);
         if (head != null) {
             head.last = node;
         }
@@ -87,7 +80,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
      * @param o добавляемый элемент.
      */
     public void addLast(T o) {
-        var node = new Node<>(o, tail);
+        Node<T> node = new Node<>(o, tail);
 
         if (tail != null) {
             tail.next = node;
@@ -100,14 +93,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         size++;
     }
 
-    /**
-     * Метод получения элемента списка на позиции.
-     * Средняя скорость O(n).
-     *
-     * @param index индекс элемента.
-     * @return элемент списка.
-     * @throws IndexOutOfBoundsException Если индекс зашел за границы списка. (index < 0 || index >= size)
-     */
+
     @Override
     public T get(int index) {
         if (index < 0 || index >= size) {
@@ -116,14 +102,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         return getNode(index).data;
     }
 
-    /**
-     * Метод удаления элемента списка на позиции.
-     * Средняя скорость O(n).
-     *
-     * @param index индекс элемента.
-     * @return удаленный элемент списка.
-     * @throws IndexOutOfBoundsException Если индекс зашел за границы списка. (index < 0 || index >= size)
-     */
+
     @Override
     public T remove(int index) {
         if (index < 0 || index >= size) {
@@ -136,7 +115,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
             return removeLast();
         }
 
-        var node = getNode(index);
+        Node<T> node = getNode(index);
         node.next.last = node.last;
         node.last.next = node.next;
         size--;
@@ -154,7 +133,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         if (tail == null) {
             throw new NoSuchElementException();
         }
-        var temp = tail;
+        Node<T> temp = tail;
         if (size != 1) {
             tail.last.next = null;
             tail = tail.last;
@@ -175,7 +154,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         if (head == null) {
             throw new NoSuchElementException();
         }
-        var tempHead = head;
+        Node<T> tempHead = head;
 
         if(size == 1) {
             clear();
@@ -189,16 +168,9 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         return tempHead.data;
     }
 
-    /**
-     * Метод удаления определеноого элемента из списка.
-     * Средня скорость O(n).
-     *
-     * @param o удаляемый элемен списка.
-     * @return True если элемент был удален, иначе False.
-     */
     @Override
     public boolean remove(T o) {
-        var node = getNode(o);
+        Node<T> node = getNode(o);
         if (node == null) {
             return false;
         }
@@ -221,7 +193,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
      * @return найденный узел.
      */
     private Node<T> getNode(int index) {
-        var node = head;
+        Node<T> node = head;
         for (int i = 0; i < index; i++) {
             node = node.next;
         }
@@ -236,7 +208,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
      * @return найденный узел.
      */
     private Node<T> getNode(T o) {
-        var node = head;
+        Node<T> node = head;
         while (node != null) {
             if(node.data.equals(o))
                 return node;
@@ -256,22 +228,16 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         size = 0;
     }
 
-    /**
-     * Метод сортировки списка. Метод принимает компаратор и
-     * использует его для сравнения элементов списка и их сортировки.
-     * Средняя скорость O(n^2).
-     *
-     * @param c Компоратор для сравнения элементов списка
-     */
+
     @Override
     public void sort(Comparator<? super T> c) {
         if (size <= 2) {
             return;
         }
         for (int i = 1; i < size; i++) {
-            var firstNode = head;
+            Node<T> firstNode = head;
             for (int j = 0; j < size - i; j++) {
-                var nextNode = firstNode.next;
+                Node<T> nextNode = firstNode.next;
                 if (c.compare(firstNode.data, nextNode.data) > 0) {
                     if(firstNode == head) {
                         head = nextNode;
@@ -308,32 +274,19 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         secondNode.next = firstNode;
     }
 
-    /**
-     * Метод получения размера списка.
-     *
-     * @return Размер списка
-     */
+
     @Override
     public int size() {
         return size;
     }
 
-    /**
-     * Метод поиска элемента в списке.
-     *
-     * @param o элемент, чей поиск будет производиться.
-     * @return True если такой элемент есть в списке, иначе False
-     */
+
     @Override
     public boolean contains(T o) {
         return getNode(o) != null;
     }
 
-    /**
-     * Метод проверки пустой ли список.
-     *
-     * @return True если список пустой, иначе False
-     */
+
     @Override
     public boolean isEmpty() {
         return size == 0;
@@ -344,7 +297,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         if (head == null) {
             return "[]";
         }
-        var node = head;
+        Node<T> node = head;
         var arrayString = new StringBuilder("[");
         while (node.next != null) {
             arrayString.append(node.data).append(", ");

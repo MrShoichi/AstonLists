@@ -36,8 +36,10 @@ public class CustomArrayList<T> implements ICustomList<T> {
      * @param capacity начальный размер списка.
      */
     public CustomArrayList(int capacity) {
+        if (capacity <= 0) {
+            throw new IllegalArgumentException();
+        }
         this.capacity = capacity;
-        this.array = (T[]) new Object[capacity];
         this.size = 0;
     }
 
@@ -49,33 +51,25 @@ public class CustomArrayList<T> implements ICustomList<T> {
     }
 
 
-    /**
-     * Метод добавления элемента в конец списка.
-     * При переполнении списка, размер списка увеличивается.
-     * Скорость O(1)/ При увеличении размера O(n).
-     *
-     * @param o добавляемый элемент.
-     */
     @Override
     public void add(T o) {
+        if (array == null) {
+            array = (T[]) new Object[DEFAULT_CAPACITY];
+        }
         if (size == capacity) {
             resize(capacity * 2);
         }
         array[size++] = o;
     }
 
-    /**
-     * Метод вставки элемента на указанный существующую позицию в списке.
-     * Скорость O(n).
-     *
-     * @param index индекс в списке.
-     * @param o добавляемый элемнт.
-     * @throws IndexOutOfBoundsException если индекс зашел за границы списка. (index < 0 || index >= size)
-     */
+
     @Override
     public void add(int index, T o) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
+        }
+        if (array == null) {
+            array = (T[]) new Object[DEFAULT_CAPACITY];
         }
         if (size == capacity) {
             resize(capacity * 2);
@@ -100,14 +94,6 @@ public class CustomArrayList<T> implements ICustomList<T> {
         System.arraycopy(temp, 0, array, 0, temp.length);
     }
 
-    /**
-     * Метод получения элемента списка на указанной позиции.
-     * Скорость O(1).
-     *
-     * @param index индекс в списке.
-     * @return элемент списка.
-     * @throws IndexOutOfBoundsException если индекс зашел за границы списка. (index < 0 || index >= size)
-     */
     @Override
     public T get(int index) {
         if (index < 0 || index >= size) {
@@ -116,14 +102,6 @@ public class CustomArrayList<T> implements ICustomList<T> {
         return array[index];
     }
 
-    /**
-     * Метод удаления элемента списка на указанной позиции.
-     * Средняя скорость O(n).
-     *
-     * @param index индекс удаляемого элемента.
-     * @return удаленный элемен.
-     * @throws IndexOutOfBoundsException если индекс зашел за границы списка. (index < 0 || index >= size)
-     */
     @Override
     public T remove(int index) {
         if (index < 0 || index >= size) {
@@ -136,13 +114,7 @@ public class CustomArrayList<T> implements ICustomList<T> {
     }
 
 
-    /**
-     * Метод удаления определенного элемента списка по значению.
-     * Средняя скорость O(n).
-     *
-     * @param o удаляемый элемент списка.
-     * @return True если элемент был удален, иначе False
-     */
+
     @Override
     public boolean remove(T o) {
         int index = find(o);
@@ -165,23 +137,16 @@ public class CustomArrayList<T> implements ICustomList<T> {
     }
 
 
-    /**
-     * Метод очистки списка. Размер списка вернется в базовое состояние - 16.
-     */
     @Override
     public void clear() {
         capacity = DEFAULT_CAPACITY;
+        for(int i = 0; i < size; i++) {
+            array[i] = null;
+        }
         size = 0;
         array = (T[]) new Object[DEFAULT_CAPACITY];
     }
 
-    /**
-     * Метод сортировки списка. Метод принимает компаратор и
-     * использует его для сравнения элементов списка и их сортировки.
-     * Средняя скорость O(n^2).
-     *
-     * @param c Компоратор для сравнения элементов списка
-     */
     @Override
     public void sort(Comparator<? super T> c) {
         if (size == 0) {
@@ -198,32 +163,19 @@ public class CustomArrayList<T> implements ICustomList<T> {
         }
     }
 
-    /**
-     * Метод получения размера списка.
-     *
-     * @return Размер списка
-     */
+
     @Override
     public int size() {
         return size;
     }
 
-    /**
-     * Метод поиска элемента в списке.
-     *
-     * @param o элемент, чей поиск будет производиться.
-     * @return True если такой элемент есть в списке, иначе False
-     */
+
     @Override
     public boolean contains(T o) {
         return find(o) != -1;
     }
 
-    /**
-     * Метод проверки пустой ли список.
-     *
-     * @return True если список пустой, иначе False
-     */
+
     @Override
     public boolean isEmpty() {
         return size == 0;
