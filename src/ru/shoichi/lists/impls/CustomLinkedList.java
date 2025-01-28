@@ -1,8 +1,12 @@
+package ru.shoichi.lists.impls;
+
+import ru.shoichi.lists.interfaces.ICustomList;
+
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 /**
- * CustomLinkedList - реализация двусвязного списка. Класс предоставляет основные методы работы со списком.
+ * ru.shoichi.lists.impls.CustomLinkedList - реализация двусвязного списка. Класс предоставляет основные методы работы со списком.
  * @param <T> тип элементов списка
  */
 public class CustomLinkedList<T> implements ICustomList<T> {
@@ -171,8 +175,9 @@ public class CustomLinkedList<T> implements ICustomList<T> {
         if (head == null) {
             throw new NoSuchElementException();
         }
+        var tempHead = head;
+
         if(size == 1) {
-            var tempHead = head;
             clear();
             return tempHead.data;
         }
@@ -181,7 +186,7 @@ public class CustomLinkedList<T> implements ICustomList<T> {
 
         size--;
 
-        return null;
+        return tempHead.data;
     }
 
     /**

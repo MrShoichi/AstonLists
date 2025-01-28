@@ -1,7 +1,11 @@
+package ru.shoichi.lists.impls;
+
+import ru.shoichi.lists.interfaces.ICustomList;
+
 import java.util.Comparator;
 
 /**
- * CustomArrayList - реализация списка с динамическим массивом.
+ * ru.shoichi.lists.impls.CustomArrayList - реализация списка с динамическим массивом.
  * <p>
  * Этот класс предоставляет основные операции работы со списком.
  *

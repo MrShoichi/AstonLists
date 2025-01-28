@@ -1,3 +1,5 @@
+package ru.shoichi.lists.interfaces;
+
 import java.util.Comparator;
 
 public interface ICustomList<T> {
